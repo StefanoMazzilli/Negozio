@@ -27,18 +27,28 @@ class Main {
 
 			System.out.println("Inserire il nome del " + (i + 1) + "° prodotto: ");
 			nome[i] = sc.nextLine().toLowerCase();
-			System.out.println("Inserire la quantità del prodotto " + nome[i] + ": ");
-			qnt[i] = sc.nextInt();
-			System.out.println("Inserire il prezzo del prodotto " + nome[i] + ": ");
-			prezzo[i] = sc.nextDouble();
-			sc.nextLine();
+			do { // controllo l'input della quantità
+				System.out.println("Inserire la quantità del prodotto " + nome[i] + ": ");
+				qnt[i] = sc.nextInt();
+				if (qnt[i] <= 0)
+					System.out.println("ERRORE! Quantità inserita non disponibile!");
+			} while (qnt[i] <= 0);
+
+			do { // controllo l'input del prezzo
+				System.out.println("Inserire il prezzo del prodotto " + nome[i] + ": ");
+				prezzo[i] = sc.nextDouble();
+				sc.nextLine();
+				if (prezzo[i] <= 0)
+					System.out.println("ERRORE! Prezzo inserito non disponibile!");
+			} while (prezzo[i] <= 0);
+
 		}
 
 		do { // Inizio la sezione in cui il cliente può fare gli acquisti
 			System.out.println("Quale prodotto vuoi acquistare?");
 			prodottoDaAcquistare = sc.nextLine().toLowerCase();
 			trovato = false;
-			risposta = "";
+			risposta = ""; // resetto la variabile risposta
 			for (i = 0; i < nProdotti; i++) { // inizio la ricerca del prodotto inserito
 				if (nome[i].contains(prodottoDaAcquistare)) { // controllo se la stringa inserita è contenuta in uno dei
 																// prodotti in negozio
@@ -57,8 +67,13 @@ class Main {
 						System.out.println(
 								"Ok! Sono rimasti " + qnt[i] + " elementi in negozio. Quanto ne vuoi acquistare?");
 						qntDaAcquistare = sc.nextInt();
+						while (qntDaAcquistare <= 0) { // controllo l'input della quantità da acquistare
+							System.out.println("Attenzione! la quantità inserita non è supportata!");
+							System.out.println("Inserire nuovamente la quantità richiesta:");
+							qntDaAcquistare = sc.nextInt();
+						}
 						sc.nextLine();
-						trovato = true;
+						trovato = true; // prodotto trovato
 						if (qntDaAcquistare > qnt[i]) {
 							System.out.println(
 									"Il prodotto richiesto non è presente in negozio nella quantità richiesta.");
@@ -80,7 +95,7 @@ class Main {
 			if (trovato == false) {
 				System.out.println("Il prodotto richiesto non è presente in negozio.");
 			}
-			risposta = "";
+			risposta = ""; // resetto la variabile risposta
 			System.out.println("Vuoi acquistare altri prodotti?");
 			risposta = sc.nextLine().toLowerCase();
 			while (!(risposta.equals("si") || risposta.equals("sì") || risposta.equals("no"))) {
